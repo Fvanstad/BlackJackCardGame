@@ -25,9 +25,11 @@ public class Main {
                 cardList.add(52 + (i), 10);
 
             }else if(cardList.get(i) < 11) {
+
                 cardList.add(52 + i, cardList.get(i));
             }
         }
+
         return cardList;
     }
 
@@ -166,7 +168,7 @@ public class Main {
 
     static void dealerWait() throws InterruptedException {
 
-        int totalSleepTime = 3500;
+        int totalSleepTime = 3200;
         int sleepTime = totalSleepTime / 7;
 
         System.out.println("");
@@ -188,15 +190,45 @@ public class Main {
         ArrayList<String> cardListNames = new ArrayList<String>(), playerDeckCardNames = new ArrayList<String>(), computerDeckCardNames = new ArrayList<String>();
         ArrayList<Double> betBalanceReturned = new ArrayList<Double>();
 
-        int playerTotal, computerTotal;
+        int playerTotal, computerTotal, computerKnownTotal = 0;
 
-        double betAmount, balance = 500;
+        double betAmount, balance = 500, startingBalance = 0;
 
-        String playerChoice = "", blackJackWinner = "", replayChoice = "";
+        String playerChoice = "", blackJackWinner = "", replayChoice = "", menuTab = "";
 
         boolean blackJackCheck = false;
 
         while (blackJackCheck != true) {
+
+            while (menuTab.equalsIgnoreCase("a") == false){
+
+                System.out.println("\n~Main Menu~");
+                System.out.println("\n(a) Play: ");
+                System.out.println("(b) Options: ");
+                System.out.print(">");
+                menuTab = input.next();
+
+                switch(menuTab){
+                    case "b":
+                        System.out.println("\n~Options Menu~");
+                        System.out.println("\n(ba)Card Decks: ");
+                        System.out.println("(bb)Blackjack Target: ");
+                        System.out.println("(bc)Starting Balance: ");
+                        System.out.println("(bd) to return to main menu");
+                        System.out.print("> ");
+                        menuTab = input.next();
+                        continue;
+
+                        case "bc":
+
+                    case "bd":
+                        continue;
+                }
+            }
+
+
+
+
 
             cardList.clear();
             cardListNames.clear();
@@ -219,9 +251,17 @@ public class Main {
 
             for (int i = 0, j = 52, k = 0; k < 2; k++){
 
+                System.out.println("cheat: " + computerDeck);
+
+                System.out.println("cheat: " + computerDeckValue);
+
                 computerDeck.add(cardList.get(i));
                 computerDeckValue.add(cardList.get(j));
                 computerDeckCardNames.add(cardListNames.get(i));
+
+                System.out.println("cheat: " + computerDeck);
+
+                System.out.println("cheat: " + computerDeckValue);
 
                 cardList.remove(i);
                 cardList.add(51, 404);
@@ -251,18 +291,12 @@ public class Main {
             //System.out.println(playerDeckValue);
             //System.out.println(playerDeckCardNames);
 
-            System.out.println("Let's Play Black Jack!");
+            System.out.println("\nLet's Play Black Jack!");
 
             betBalanceReturned = betPlacer(betAmount, balance);
 
             betAmount = betBalanceReturned.get(0);
             balance = betBalanceReturned.get(1);
-
-            for (int i = 0; i < computerDeckValue.size(); i++) {
-
-                computerTotal += computerDeckValue.get(i);
-
-            }
 
             for (int i = 0; i < playerDeckValue.size(); i += 1) {
 
@@ -270,12 +304,20 @@ public class Main {
 
             }
 
-            System.out.println("\nThe dealer's known total is: " + computerDeckValue.get(1));
-            System.out.print("\nYour current cards are: " + playerDeckCardNames);
-            System.out.print("\nYour current cards value is: " + playerDeckValue);
-            System.out.println("\nWith your cards dealt, your total is: " + playerTotal);
+            for (int i = 0; i < computerDeckValue.size(); i++) {
 
-            System.out.print("Would you like to (HIT / STAND)(H / S): ");
+                computerTotal += computerDeckValue.get(i);
+
+            }
+
+            computerKnownTotal = computerTotal - computerDeckValue.get(0);
+
+            System.out.println("\nThe dealer's known total is: " + computerDeckValue.get(1));
+            System.out.println("\nYour current cards are: " + playerDeckCardNames);
+            System.out.println("Your current cards value is: " + playerDeckValue);
+            System.out.println("With your cards dealt, your total is: " + playerTotal);
+
+            System.out.print("\nWould you like to (HIT / STAND)(H / S): ");
             playerChoice = input.next();
 
             while (blackJackCheck != true) {
@@ -301,26 +343,27 @@ public class Main {
                     cardList.remove(0);
                     cardList.add(51, 404);
                     cardListNames.remove(0);
+
                     playerTotal += playerDeckValue.get(playerDeckValue.size() - 1);
 
                     if (playerTotal > 21) {
-                        System.out.println("You have drawn a " + playerDeckCardNames.get(playerDeckCardNames.size() - 1));
+                        System.out.println("\nYou have drawn a " + playerDeckCardNames.get(playerDeckCardNames.size() - 1));
                         System.out.println("Your total is now: " + playerTotal);
                         System.out.println("Bust!");
                         blackJackWinner = "Dealer";
                         blackJackCheck = true;
                         break;
                     } else if (playerTotal == 21) {
-                        System.out.println("You have drawn a " + playerDeckCardNames.get(playerDeckCardNames.size() - 1));
+                        System.out.println("\nYou have drawn a " + playerDeckCardNames.get(playerDeckCardNames.size() - 1));
                         System.out.println("Your total is now: " + playerTotal);
                         System.out.println("Blackjack!");
                         blackJackWinner = "Player";
                         blackJackCheck = true;
                         break;
                     } else ;
-                    System.out.print("\nYour current cards value is: " + playerDeckCardNames);
-                    System.out.println("\nYour current total is: " + playerTotal);
-                    System.out.print("Would you like to (HIT / STAND)(H / S): ");
+                    System.out.println("\nYour current cards are: " + playerDeckCardNames);
+                    System.out.println("Your current total is: " + playerTotal);
+                    System.out.print("\nWould you like to (HIT / STAND)(H / S): ");
                     playerChoice = input.next();
                     continue;
 
@@ -331,12 +374,12 @@ public class Main {
                     dealerWait();
 
                     if (playerTotal > 21) {
-                        System.out.println("You have busted!");
+                        System.out.println("\nYou have busted!");
                         blackJackWinner = "Dealer";
                         blackJackCheck = true;
                         break;
                     } else if (playerTotal == 21) {
-                        System.out.println("You have drawn a 21! Black Jack!");
+                        System.out.println("\nYou have drawn a 21! Black Jack!");
                         blackJackWinner = "Player";
                         blackJackCheck = true;
                         break;
@@ -354,14 +397,14 @@ public class Main {
                         playerTotal += playerDeckValue.get(playerDeckValue.size() - 1);
 
                         if (playerTotal > 21) {
-                            System.out.println("You have drawn a " + playerDeckCardNames.get(playerDeckCardNames.size() - 1));
+                            System.out.println("\nYou have drawn a " + playerDeckCardNames.get(playerDeckCardNames.size() - 1));
                             System.out.println("Your total is now: " + playerTotal);
                             System.out.println("Bust!");
                             blackJackWinner = "Dealer";
                             blackJackCheck = true;
                             break;
                         } else if (playerTotal == 21) {
-                            System.out.println("You have drawn a " + playerDeckCardNames.get(playerDeckCardNames.size() - 1));
+                            System.out.println("\nYou have drawn a " + playerDeckCardNames.get(playerDeckCardNames.size() - 1));
                             System.out.println("Your total is now: " + playerTotal);
                             System.out.println("Blackjack!");
                             blackJackWinner = "Player";
@@ -369,31 +412,18 @@ public class Main {
                             break;
                         } else ;
                         System.out.print("\nYour current cards value is: " + playerDeckCardNames);
-                        System.out.println("\nYour current total is: " + playerTotal);
-                        System.out.print("Would you like to (HIT / STAND)(H / S): ");
+                        System.out.println("Your current total is: " + playerTotal);
+                        System.out.print("\nWould you like to (HIT / STAND)(H / S): ");
                         playerChoice = input.next();
                         continue;
 
                     } else if (playerChoice.equalsIgnoreCase("stand") || playerChoice.equalsIgnoreCase("s")) {
-                        System.out.println("\nThe dealer will now draw one card");
-                        System.out.println("The dealer has drawn a " + computerDeckCardNames.get(computerDeckCardNames.size() - 1));
-                        System.out.println("Their known total is: " + (computerTotal - computerDeckValue.get(0)));
-                        dealerWait();
 
-                        computerDeck.add(cardList.get(0));
-                        computerDeckValue.add(cardList.get(52));
-                        computerDeckCardNames.add(cardListNames.get(0));
-
-                        cardList.add(51, 404);
-                        cardList.remove(0);
-                        cardListNames.remove(0);
-                        computerTotal += computerDeckValue.get(computerDeckValue.size() - 1);
-
-                        if (computerTotal >= 17 && computerTotal <= 21) {
-                            System.out.println("The dealer stands on 17 or more");
-                            System.out.println("The dealer reveals their last card: " + computerDeckCardNames);
+                        if (computerKnownTotal >= 16 && computerKnownTotal <= 21) {
+                            System.out.println("\nThe dealer stands on 16 or more");
+                            System.out.println("The dealer reveals their full deck: " + computerDeckCardNames);
+                            System.out.println("Their actual total is: " + computerTotal);
                             dealerWait();
-                            System.out.println("Their total is: " + computerTotal);
                             if (computerTotal > playerTotal) {
                                 dealerWait();
                                 System.out.println("\nThe Dealer is closer to 21! Dealer Wins!");
@@ -408,28 +438,62 @@ public class Main {
                                 break;
                             }
                         } else if (computerTotal == 21) {
-                            System.out.println("The dealer draws a card and stands. The dealer reveals their cards: " + computerDeckCardNames);
-                            System.out.println("Their total is: " + computerTotal);
+                            System.out.println("\nThe dealer stands on 16 or more");
+                            System.out.println("The dealer reveals their full deck: " + computerDeckCardNames);
+                            System.out.println("Their actual total is: " + computerTotal);
                             dealerWait();
-                            System.out.println("The dealer gets a 21! The dealer has a Black Jack!");
+                            System.out.println("\nThe dealer gets a 21! The dealer has a Black Jack!");
                             blackJackWinner = "Dealer";
                             blackJackCheck = true;
                             break;
-                        } else if (computerTotal > 21) {
-                            System.out.println("The dealer draws a card and stands. The dealer reveals their cards: " + computerDeckCardNames);
-                            System.out.println("Their total is: " + computerTotal);
+                        } else if (computerKnownTotal > 21) {
+                            System.out.println("\nThe dealer stands on 16 or more");
+                            System.out.println("The dealer reveals their full deck: " + computerDeckCardNames);
+                            System.out.println("Their actual total is: " + computerTotal);
                             dealerWait();
                             System.out.println("The dealer is over 21! Bust!");
                             blackJackWinner = "Player";
                             blackJackCheck = true;
                             break;
                         } else {
+
+                            System.out.println("cheat: " + computerTotal);
+                            System.out.println("cheat: " + computerKnownTotal);
+
+                            computerDeck.add(cardList.get(0));
+                            computerDeckValue.add(cardList.get(52));
+                            computerDeckCardNames.add(cardListNames.get(0));
+
+                            cardList.remove(0);
+                            cardList.add(51, 404);
+                            cardListNames.remove(0);
+
+                            computerTotal += computerDeckValue.get(computerDeckValue.size() - 1);
+                            computerKnownTotal += computerDeckValue.get(computerDeckValue.size() - 1);
+
+                            System.out.println("cheat: " + computerTotal);
+                            System.out.println("cheat: " + computerKnownTotal);
+
+
+                            System.out.println("\nThe dealer will draw one card");
+                            System.out.println("The dealer has drawn a " + computerDeckCardNames.get(computerDeckCardNames.size() - 1));
+
+                            System.out.print("\nThe dealers known cards are: ");
+
+                            for (int i = 1; i < computerDeckCardNames.size(); i++){
+                                System.out.print(computerDeckCardNames.get(i) + " | ");
+                            }
+
+                            System.out.println("The dealers known total is: " + computerKnownTotal);
+
+                            dealerWait();
+
                             continue;
                         }
                     }
                 }
             }
-            System.out.println("The winner is the " + blackJackWinner + "!");
+            System.out.println("\nThe winner is the " + blackJackWinner + "!");
 
             if (blackJackWinner.equalsIgnoreCase("Player")) {
                 balance = balance + (betAmount * 1.5);
