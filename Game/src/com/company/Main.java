@@ -251,17 +251,9 @@ public class Main {
 
             for (int i = 0, j = 52, k = 0; k < 2; k++){
 
-                System.out.println("cheat: " + computerDeck);
-
-                System.out.println("cheat: " + computerDeckValue);
-
                 computerDeck.add(cardList.get(i));
                 computerDeckValue.add(cardList.get(j));
                 computerDeckCardNames.add(cardListNames.get(i));
-
-                System.out.println("cheat: " + computerDeck);
-
-                System.out.println("cheat: " + computerDeckValue);
 
                 cardList.remove(i);
                 cardList.add(51, 404);
@@ -457,8 +449,6 @@ public class Main {
                             break;
                         } else {
 
-                            System.out.println("cheat: " + computerTotal);
-                            System.out.println("cheat: " + computerKnownTotal);
 
                             computerDeck.add(cardList.get(0));
                             computerDeckValue.add(cardList.get(52));
@@ -470,10 +460,6 @@ public class Main {
 
                             computerTotal += computerDeckValue.get(computerDeckValue.size() - 1);
                             computerKnownTotal += computerDeckValue.get(computerDeckValue.size() - 1);
-
-                            System.out.println("cheat: " + computerTotal);
-                            System.out.println("cheat: " + computerKnownTotal);
-
 
                             System.out.println("\nThe dealer will draw one card");
                             System.out.println("The dealer has drawn a " + computerDeckCardNames.get(computerDeckCardNames.size() - 1));
