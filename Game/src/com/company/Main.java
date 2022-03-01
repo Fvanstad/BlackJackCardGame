@@ -95,7 +95,7 @@ public class Main {
         System.out.print("\nEnter how much would you like to bet: ");
         betAmount = input.nextInt();
 
-        System.out.print("\nDid you want to bet: $" + betAmount + "? ");
+        System.out.print("\n(Y/N) Did you want to bet: $" + betAmount + "? ");
         betConfirmation = input.next();
 
         if(betAmount > balance || betConfirmation.equalsIgnoreCase("N")){
@@ -113,7 +113,7 @@ public class Main {
                     System.out.print("\nEnter how much would you like to bet: ");
                     betAmount = input.nextInt();
 
-                    System.out.print("\nDid you want to bet: $" + betAmount + "? ");
+                    System.out.print("\n(Y/N) Did you want to bet: $" + betAmount + "? ");
                     betConfirmation = input.next();
 
                     continue;
@@ -125,7 +125,7 @@ public class Main {
                     System.out.print("\nEnter how much would you like to bet: ");
                     betAmount = input.nextInt();
 
-                    System.out.print("\nDid you want to bet: $" + betAmount + "? ");
+                    System.out.print("\n(Y/N) Did you want to bet: $" + betAmount + "? ");
                     betConfirmation = input.next();
 
                     continue;
@@ -135,7 +135,7 @@ public class Main {
                     System.out.print("\nEnter how much would you like to bet: ");
                     betAmount = input.nextInt();
 
-                    System.out.print("\nDid you want to bet: $" + betAmount + "? ");
+                    System.out.print("\n(Y/N) Did you want to bet: $" + betAmount + "? ");
                     betConfirmation = input.next();
 
                     continue;
@@ -146,10 +146,6 @@ public class Main {
                 }
             }
         }
-
-
-
-
 
         balance -= betAmount;
         System.out.println("Your balance is now: $" + balance);
@@ -205,7 +201,7 @@ public class Main {
                 System.out.println("\n~Main Menu~");
                 System.out.println("\n(a) Play: ");
                 System.out.println("(b) Options: ");
-                System.out.print(">");
+                System.out.print("> ");
                 menuTab = input.next();
 
                 switch(menuTab){
@@ -225,10 +221,6 @@ public class Main {
                         continue;
                 }
             }
-
-
-
-
 
             cardList.clear();
             cardListNames.clear();
@@ -251,17 +243,9 @@ public class Main {
 
             for (int i = 0, j = 52, k = 0; k < 2; k++){
 
-                System.out.println("cheat: " + computerDeck);
-
-                System.out.println("cheat: " + computerDeckValue);
-
                 computerDeck.add(cardList.get(i));
                 computerDeckValue.add(cardList.get(j));
                 computerDeckCardNames.add(cardListNames.get(i));
-
-                System.out.println("cheat: " + computerDeck);
-
-                System.out.println("cheat: " + computerDeckValue);
 
                 cardList.remove(i);
                 cardList.add(51, 404);
