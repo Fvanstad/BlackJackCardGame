@@ -78,11 +78,8 @@ public class Main {
 
     }
 
-    static ArrayList betPlacer(double betAmount, double balance) throws InterruptedException {
+    static int betPlacer (int balance, double betAmount) {
 
-        ArrayList<Double> betBalanceReturned = new ArrayList<Double>();
-
-        int balanceWrongVar = 1;
         Scanner input = new Scanner(System.in);
         String betConfirmation = "";
 
@@ -90,76 +87,54 @@ public class Main {
         System.out.println("$$$ Time to bet! $$$");
         System.out.println("====================");
 
-        System.out.println("\nYour current balance is: $" + balance);
+        do{
 
-        System.out.print("\nEnter how much would you like to bet: ");
-        betAmount = input.nextInt();
+            System.out.println("\nYour current balance is: $" + balance);
 
-        System.out.print("\n(Y/N) Did you want to bet: $" + betAmount + "? ");
-        betConfirmation = input.next();
+            System.out.print("\nEnter how much would you like to bet: ");
+            betAmount = input.nextInt();
 
-        if(betAmount > balance || betConfirmation.equalsIgnoreCase("N")){
+            System.out.print("\n(Y/N) Did you want to bet: $" + betAmount + "? ");
+            betConfirmation = input.next();
 
-            while (balanceWrongVar != 0) {
+            if (betAmount < 0){
 
-                if (betAmount >= balance && balance == 0){
+                System.out.println("Bets cannot be below 0!");
 
-                    System.out.println("\nInsufficient Funds");
-                    System.out.println("Adding $50 to your balance now...");
-
-                    balance += 50;
-                    Thread.sleep(1000);
-
-                    System.out.print("\nEnter how much would you like to bet: ");
-                    betAmount = input.nextInt();
-
-                    System.out.print("\n(Y/N) Did you want to bet: $" + betAmount + "? ");
-                    betConfirmation = input.next();
-
-                    continue;
-
-                }else if(betAmount > balance){
-
-                    System.out.println("\nBet Amount too high! Choose another amount to bet!");
-
-                    System.out.print("\nEnter how much would you like to bet: ");
-                    betAmount = input.nextInt();
-
-                    System.out.print("\n(Y/N) Did you want to bet: $" + betAmount + "? ");
-                    betConfirmation = input.next();
-
-                    continue;
-
-                }else if(betAmount <= balance && betConfirmation.equalsIgnoreCase("N")) {
-
-                    System.out.print("\nEnter how much would you like to bet: ");
-                    betAmount = input.nextInt();
-
-                    System.out.print("\n(Y/N) Did you want to bet: $" + betAmount + "? ");
-                    betConfirmation = input.next();
-
-                    continue;
-
-                }else if(betAmount <= balance && betConfirmation.equalsIgnoreCase("Y")) {
-                    break;
-
-                }
+                continue;
             }
-        }
+
+            if (betAmount >= balance && balance == 0) {
+
+                System.out.println("Insufficient Funds");
+                System.out.println("Adding $50 to your balance now...");
+
+                balance += 50;
+
+                continue;
+
+            } else if (betAmount > balance) {
+
+                System.out.println("Bet Amount too high! Choose another amount to bet!");
+
+                continue;
+
+            } else if (betAmount <= balance && betConfirmation.equalsIgnoreCase("N")) {
+
+                continue;
+
+            } else if (betAmount <= balance && betConfirmation.equalsIgnoreCase("Y")) {
+                break;
+
+            }
+
+        } while (true);
 
         balance -= betAmount;
-        System.out.println("Your balance is now: $" + balance);
-        Thread.sleep(1000);
-        System.out.println("We are placing your bet...");
-        Thread.sleep(2500);
 
-        System.out.println("\n=================");
-        System.out.println("Betting Complete!");
-        System.out.println("=================");
+        System.out.println("\nYour balance is now: $" + balance);
 
-        betBalanceReturned.add(betAmount);
-        betBalanceReturned.add(balance);
-        return betBalanceReturned;
+        return balance;
     }
 
     static void dealerWait() throws InterruptedException {
@@ -184,11 +159,11 @@ public class Main {
 
         ArrayList<Integer> cardList = new ArrayList<Integer>(), playerDeck = new ArrayList<Integer>(), playerDeckValue = new ArrayList<Integer>(), computerDeckValue = new ArrayList<Integer>(), computerDeck = new ArrayList<Integer>();
         ArrayList<String> cardListNames = new ArrayList<String>(), playerDeckCardNames = new ArrayList<String>(), computerDeckCardNames = new ArrayList<String>();
-        ArrayList<Double> betBalanceReturned = new ArrayList<Double>();
+        balance balanceDefault = new balance();
 
         int playerTotal, computerTotal, computerKnownTotal = 0;
 
-        double betAmount, balance = 500, startingBalance = 0;
+        double betAmount;
 
         String playerChoice = "", blackJackWinner = "", replayChoice = "", menuTab = "";
 
@@ -198,7 +173,8 @@ public class Main {
 
             while (menuTab.equalsIgnoreCase("a") == false){
 
-                System.out.println("\n~Main Menu~");
+                System.out.println("\n~Black Jack~");
+                System.out.println("~Main Menu~");
                 System.out.println("\n(a) Play: ");
                 System.out.println("(b) Options: ");
                 System.out.print("> ");
@@ -275,12 +251,10 @@ public class Main {
             //System.out.println(playerDeckValue);
             //System.out.println(playerDeckCardNames);
 
+            balanceDefault.setBalance(betPlacer(balanceDefault.currentBalance, betAmount));
+
             System.out.println("\nLet's Play Black Jack!");
 
-            betBalanceReturned = betPlacer(betAmount, balance);
-
-            betAmount = betBalanceReturned.get(0);
-            balance = betBalanceReturned.get(1);
 
             for (int i = 0; i < playerDeckValue.size(); i += 1) {
 
@@ -474,7 +448,7 @@ public class Main {
             System.out.println("\nThe winner is the " + blackJackWinner + "!");
 
             if (blackJackWinner.equalsIgnoreCase("Player")) {
-                balance = balance + (betAmount * 1.5);
+                balanceDefault.multiplyBalance(1.5);
             }
 
             System.out.print("\nWould you like to play again (Y/N): ");
